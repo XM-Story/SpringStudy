@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-<bean id="studentService" name="studentService" class="com.xmspace.step01.StudentServiceImpl"/>
-<bean  name="xm|xf" class="com.xmspace.step01.StudentServiceImpl"/>
+    <bean id="studentService" name="p,p1" class="com.xmspace.step01.StudentServiceImpl"/>
+    <bean autowire="byName" id="student" class="com.xmspace.step01.Student" p:name="xiaom" p:age="26" p:studentService-ref="studentService">
+        <property name="emails">
+            <list>
+                <value>xm@qq.com</value>
+                <value>xm1@qq.com</value>
+            </list>
+        </property>
+        <property name="tels">
+            <set>
+                <value>111</value>
+                <value>111</value>
+            </set>
+        </property>
+        <property name="address">
+            <list>
+                <value>111</value>
+                <value>111</value>
+            </list>
+        </property>
+        <property name="qqs">
+            <map>
+                <entry>
+                    <key><value>name</value></key>
+                    <value>xm</value>
+                </entry>
+            </map>
+        </property>
+        <property name="p">
+            <props>
+                <prop key="name">xm</prop>
+                <prop key="age">12</prop>
+            </props>
+        </property>
+        <property name="studentServices">
+            <list>
+                <ref bean="studentService"></ref>
+                <ref bean="studentService"></ref>
+            </list>
+        </property>
+    </bean>
+    <bean id="user" class="com.xmspace.step01.User">
+        <constructor-arg value="xiaom"/>
+        <constructor-arg value="26" type="int"/>
+        <constructor-arg ref="student"/>
+    </bean>
 </beans>

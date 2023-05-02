@@ -41,15 +41,31 @@ public class test01 {
         for (String id : beanNamesForType) {
             System.out.println("id = " + id);
         }
-        //是否存在指定的id的bean 找个没有的
+        //是否存在指定的id或者name的bean, 找个没有的
         if (!applicationContext.containsBean("not exists")){
             System.out.println("not exists = " + false);
         }
         //根据name属性获取对象  name属性
-        //有了id为什么需要name？  每个class类型只可以有一个id 且这个id全局唯一，但是可以有多个name(不同bean的name可以重复但是不建议没必要)
-        //1.很久之前的id不支持/开头等特殊写法会有bug 所以有了name属性  后面的版本的id的bug修复了支持了特殊写法
-        //2.name属性也方便同class不同对象的配置。
-        StudentService studentService2 = (StudentService) applicationContext.getBean("xm|xf");
+        //有了id为什么需要name？  每个class类型只可以有一个id 且这个id全局唯一，但是可以有多个name，逗号隔开即可，虽然意义不大
+        //1.很久之前的id不支持 /开头等特殊写法会有bug 所以有了name属性  后面的版本的id的bug修复了支持了特殊写法
+        //2.name属性也方便同class不同对象名的配置。
+        StudentService studentService2 = (StudentService) applicationContext.getBean("p");
         studentService2.play();
+        //是否存在有这个id的bean 不可以判断name
+        if (applicationContext.containsBeanDefinition("studentService")) {
+            System.out.println("true = " + true);
+        }else{
+            System.out.println("false = " + false);
+        }
     }
+
+    @Test
+    public void test03(){
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/applicationContext.xml");
+        Student student = applicationContext.getBean("student", Student.class);
+        User user = applicationContext.getBean("user", User.class);
+        System.out.println(student);
+        System.out.println(user);
+    }
+
 }
