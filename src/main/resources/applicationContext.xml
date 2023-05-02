@@ -48,4 +48,13 @@
         <constructor-arg value="26" type="int"/>
         <constructor-arg ref="student"/>
     </bean>
+    <bean id="connection" class="com.xmspace.step02.ConnectionFactoryBean">
+        <property name="driver" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test_plan"/>
+        <property name="user" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+    <bean id="conFac" class="com.xmspace.step02.ConnectionFactory"/>
+    <bean id="con" factory-bean="conFac" factory-method="getConnection"/>
+    <bean id="con1" class="com.xmspace.step02.StaticConnectionFactory" factory-method="getConnection"/>
 </beans>
