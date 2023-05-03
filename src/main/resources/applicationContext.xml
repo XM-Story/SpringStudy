@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
     <bean id="studentService" name="p,p1" class="com.xmspace.step01.StudentServiceImpl"/>
     <bean autowire="byName" id="student" class="com.xmspace.step01.Student" p:name="xiaom" p:age="26" p:studentService-ref="studentService">
         <property name="emails">
@@ -48,13 +50,32 @@
         <constructor-arg value="26" type="int"/>
         <constructor-arg ref="student"/>
     </bean>
+    <context:property-placeholder location="classpath:/db.properties"/>
     <bean id="connection" class="com.xmspace.step02.ConnectionFactoryBean">
-        <property name="driver" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://127.0.0.1:3306/test_plan"/>
-        <property name="user" value="root"/>
-        <property name="password" value="123456"/>
+        <property name="driver" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
     </bean>
-    <bean id="conFac" class="com.xmspace.step02.ConnectionFactory"/>
-    <bean id="con" factory-bean="conFac" factory-method="getConnection"/>
-    <bean id="con1" class="com.xmspace.step02.StaticConnectionFactory" factory-method="getConnection"/>
+<!--    <bean id="conFac" class="com.xmspace.step02.ConnectionFactory"/>-->
+<!--    <bean id="con" factory-bean="conFac" factory-method="getConnection"/>-->
+<!--    <bean id="con1" class="com.xmspace.step02.StaticConnectionFactory" factory-method="getConnection"/>-->
+
+    <bean id="initBean" class="com.xmspace.step03.InitBean" lazy-init="true" init-method="initCustom" destroy-method="destroyCustom"/>
+    <bean id="myConverterForDate" class="com.xmspace.step03.MyConverterForDate" p:pattern="yyyy-MM-dd"/>
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <ref bean="myConverterForDate"/>
+            </set>
+        </property>
+    </bean>
+    <bean id="animal" class="com.xmspace.step03.Animal" p:birth="2023-05-03"/>
+    <bean id="myBeanPostProcessor" class="com.xmspace.step03.MyBeanPostProcessor"/>
+    <bean id="myAdvice" class="com.xmspace.step03.MyAdvice"/>
+    <bean id="myInterceptor" class="com.xmspace.step03.MyInterceptor"/>
+    <aop:config>
+        <aop:pointcut id="myAdviceProxy" expression="execution(* *(..))"/>
+        <aop:advisor advice-ref="myInterceptor" pointcut-ref="myAdviceProxy"/>
+    </aop:config>
 </beans>

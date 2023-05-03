@@ -1,5 +1,9 @@
-package com.xmspace.step01;
+package com.xmspace.All;
 
+import com.xmspace.step01.BeanFactory;
+import com.xmspace.step01.Student;
+import com.xmspace.step01.StudentService;
+import com.xmspace.step01.User;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

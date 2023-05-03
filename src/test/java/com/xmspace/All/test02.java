@@ -1,4 +1,4 @@
-package com.xmspace.step01;
+package com.xmspace.All;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
